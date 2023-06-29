@@ -1,6 +1,7 @@
 package com.example.hw_db.Model
 
 import java.io.FileDescriptor
+import java.io.Serializable
 import java.time.LocalDate
 
-data class Buylist(var id: Long, var name: String, var date: LocalDate, var description: String)
+data class Buylist(var id: Long, var name: String, var date: LocalDate, var description: String): Serializable
