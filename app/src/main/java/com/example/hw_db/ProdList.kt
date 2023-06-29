@@ -60,19 +60,19 @@ class ProdList : AppCompatActivity() {
             id: Long
         ): Boolean {
             val builder = AlertDialog.Builder(contextParam).setTitle("Actions:")
-            val product = parent?.getItemAtPosition(position) as Product
+            val selectedProduct = parent?.getItemAtPosition(position) as Product
             builder.setPositiveButton("Edit", fun(_: DialogInterface, _: Int) {
 
                 val intent = Intent(contextParam, CreateUpdateActivityProduct::class.java).also {
                     it.putExtra("listid", listid)
                     val bundleToProdEditAct: Bundle = Bundle()
-                    bundleToProdEditAct.putSerializable("editItem", product)
+                    bundleToProdEditAct.putSerializable("editItem", selectedProduct)
                     it.putExtra("BUNDLE", bundleToProdEditAct)
                 }
                 result.launch(intent)
             })
             builder.setNeutralButton("Delete", fun(_: DialogInterface, _: Int) {
-                datagetter.deleteProduct(product)
+                datagetter.deleteProduct(selectedProduct)
             })
             builder.setNeutralButton("Cancel", fun(interf: DialogInterface, _: Int) {
                 interf.cancel()

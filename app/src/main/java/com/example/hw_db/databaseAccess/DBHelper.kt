@@ -1,9 +1,12 @@
 package com.example.hw_db.databaseAccess
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
+import androidx.core.content.edit
 import java.io.File
 import java.io.FileOutputStream
 
@@ -24,7 +27,7 @@ class DBHelper (
 
     fun createDB(){
         val file = File(DB_PATH)
-        if(file.exists()){
+        if(file.exists() && !myContext.getSharedPreferences("DBPrefss", Context.MODE_PRIVATE).getBoolean("dbcreated", false)){
             try {
                 val myInput = myContext.assets.open(DB_NAME)
                 val myOutput = FileOutputStream(DB_PATH)
@@ -35,6 +38,10 @@ class DBHelper (
                 }
                 myInput.close()
                 myOutput.close()
+                myContext.getSharedPreferences("DbPrefs", Context.MODE_PRIVATE).edit {
+                    this.putBoolean("dbcreated", true)
+                    this.apply()
+                }
             }
             catch (ex: Exception){
                 Log.e("Error", ex.message.toString())
