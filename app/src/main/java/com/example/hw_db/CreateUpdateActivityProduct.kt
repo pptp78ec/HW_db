@@ -18,6 +18,7 @@ class CreateUpdateActivityProduct : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_update_product)
         bundle = intent.extras?.getBundle("BUNDLE")
+        listid = intent.extras?.getLong("listid")
         if (bundle != null) {
             fillFieldsWithData(bundle!!)
         }
@@ -36,9 +37,9 @@ class CreateUpdateActivityProduct : AppCompatActivity() {
     fun clickSave() {
         val DBDataGetter = DBDataGetter(DBHelper.build(this))
         if(product != null){
-            DBDataGetter.updateProduct(product!!)
+            DBDataGetter.updateProduct(product!!,listid!!)
         }
-        else DBDataGetter.addProduct(product!!, )
+        else DBDataGetter.addProduct(product!!, listid!!)
         setResult(RESULT_OK)
         finish()
 

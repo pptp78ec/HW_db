@@ -40,7 +40,7 @@ class DBDataGetter(private val DbHelper: DBHelper) {
         return mutableListOf()
     }
 
-    fun getProductListInList(listId: Int): MutableList<Product> {
+    fun getProductListInList(listId: Long): MutableList<Product> {
         val db = DbHelper.open()
         var cursor: Cursor? = null
         try {
