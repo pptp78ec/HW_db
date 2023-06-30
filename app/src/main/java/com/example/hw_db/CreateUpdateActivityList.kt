@@ -32,12 +32,13 @@ class CreateUpdateActivityList : AppCompatActivity() {
     }
 
     fun clickSave() {
+        val buyList = Buylist(0, viewListName?.text.toString(), LocalDate.now(), viewListDesc?.text.toString()  )
         val DBDataGetter = DBDataGetter(DBHelper.build(this))
         if(list != null){
-            DBDataGetter.updateList(list!!)
+            DBDataGetter.updateList(buyList)
         }
         else{
-            val buyList = Buylist(0, viewListName?.text.toString(), LocalDate.now(), viewListDesc?.text.toString()  )
+
             DBDataGetter.addList(buyList)
         }
 
