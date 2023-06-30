@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
+import android.widget.Button
 import android.widget.ListView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -44,6 +45,7 @@ class ProdList : AppCompatActivity() {
             it.adapter = adapter
             it.onItemLongClickListener = onlongpress(this, listid!!, result, dbDataGetter!!)
         }
+        findViewById<Button>(R.id.button_addprod).setOnClickListener({onaddclick(this)})
 
     }
 
@@ -82,6 +84,12 @@ class ProdList : AppCompatActivity() {
         }
 
 
+    }
+    fun onaddclick(contextParam: Context) {
+        val intent = Intent(contextParam, CreateUpdateActivityProduct::class.java).also {
+            it.putExtra("listid", listid)
+        }
+        result.launch(intent)
     }
 
 }

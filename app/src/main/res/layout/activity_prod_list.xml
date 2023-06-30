@@ -10,9 +10,24 @@
         android:id="@+id/toolbar_mainmenu_prodactivity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
-    <ListView
-        android:id="@+id/listview_products"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <ListView
+            android:id="@+id/listview_products"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="9"/>
+        <Button
+            android:id="@+id/button_addprod"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginBottom="20dp"
+            android:textSize="18sp"
+            android:text="Add new product"/>
+    </LinearLayout>
+
+
 </LinearLayout>

@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
+import android.widget.Button
 import android.widget.ListView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -43,6 +44,7 @@ class MainActivity : AppCompatActivity() {
             it.adapter = BuyListDataAdapter(this, R.layout.listitem_list, lists!!)
             it.onItemLongClickListener = onlongpress(this, result, dbDataGetter!!)
         }
+        findViewById<Button>(R.id.button_addlist).setOnClickListener({ onaddclick(this) })
     }
 
     fun onlongpress(contextParam: Context, result: ActivityResultLauncher<Intent>, datagetter: DBDataGetter) = object : AdapterView.OnItemLongClickListener {
@@ -73,5 +75,9 @@ class MainActivity : AppCompatActivity() {
             builder.create()
             return true
         }
+    }
+    fun onaddclick(contextParam: Context) {
+        val intent = Intent(contextParam, CreateUpdateActivityList::class.java)
+        result.launch(intent)
     }
 }
