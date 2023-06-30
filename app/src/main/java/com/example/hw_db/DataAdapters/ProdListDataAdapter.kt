@@ -10,7 +10,7 @@ import android.widget.TextView
 import com.example.hw_db.Model.Product
 import com.example.hw_db.R
 
-class ProdListDataAdapter(val context: Context, var resource: Int,  var objects: MutableList<Product>) :
+class ProdListDataAdapter( context: Context, var resource: Int,  var objects: MutableList<Product>) :
     ArrayAdapter<Product>(context, resource, objects) {
         val inflater: LayoutInflater = LayoutInflater.from(context)
 

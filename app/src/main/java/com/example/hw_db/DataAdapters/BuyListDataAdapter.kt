@@ -10,7 +10,7 @@ import com.example.hw_db.Model.Buylist
 import com.example.hw_db.R
 
 
-class BuyListDataAdapter(val context: Context, var resource: Int, var objects: MutableList<Buylist>) :
+class BuyListDataAdapter(context: Context, var resource: Int, var objects: MutableList<Buylist>) :
     ArrayAdapter<Buylist>(context, resource, objects) {
 
     private var inflater: LayoutInflater = LayoutInflater.from(context)
