@@ -35,6 +35,7 @@ class CreateUpdateActivityList : AppCompatActivity() {
         val buyList = Buylist(0, viewListName?.text.toString(), LocalDate.now(), viewListDesc?.text.toString()  )
         val DBDataGetter = DBDataGetter(DBHelper.build(this))
         if(list != null){
+            buyList.id = list!!.id
             DBDataGetter.updateList(buyList)
         }
         else{

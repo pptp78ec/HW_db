@@ -27,8 +27,7 @@ class ProdList : AppCompatActivity() {
     val result =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
-                prodList = DBDataGetter(DBHelper.build(this)).getProductListInList(listid!!)
-                (ProductsListView?.adapter as ProdListDataAdapter).notifyDataSetChanged()
+                refreshData()
             }
         }
 
@@ -43,7 +42,7 @@ class ProdList : AppCompatActivity() {
         val adapter = ProdListDataAdapter(this, R.layout.listitem_prod, prodList!!)
         ProductsListView = findViewById<ListView>(R.id.listview_products).also {
             it.adapter = adapter
-            it.onItemLongClickListener = onlongpress(this, listid!!, result, dbDataGetter!!)
+            it.onItemClickListener = onlongpress(this, listid!!, result, dbDataGetter!!)
         }
         findViewById<Button>(R.id.button_addprod).setOnClickListener({onaddclick(this)})
 
@@ -54,13 +53,9 @@ class ProdList : AppCompatActivity() {
         listid: Long,
         result: ActivityResultLauncher<Intent>,
         datagetter: DBDataGetter
-    ) = object : AdapterView.OnItemLongClickListener {
-        override fun onItemLongClick(
-            parent: AdapterView<*>?,
-            view: View?,
-            position: Int,
-            id: Long
-        ): Boolean {
+    ) = object : AdapterView.OnItemClickListener {
+
+        override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
             val builder = AlertDialog.Builder(contextParam).setTitle("Actions:")
             val selectedProduct = parent?.getItemAtPosition(position) as Product
             builder.setPositiveButton("Edit", fun(_: DialogInterface, _: Int) {
@@ -73,14 +68,15 @@ class ProdList : AppCompatActivity() {
                 }
                 result.launch(intent)
             })
-            builder.setNeutralButton("Delete", fun(_: DialogInterface, _: Int) {
+            builder.setNegativeButton("Delete", fun(_: DialogInterface, _: Int) {
                 datagetter.deleteProduct(selectedProduct)
+                refreshData()
             })
             builder.setNeutralButton("Cancel", fun(interf: DialogInterface, _: Int) {
                 interf.cancel()
             })
             builder.create()
-            return true
+            builder.show()
         }
 
 
@@ -90,6 +86,12 @@ class ProdList : AppCompatActivity() {
             it.putExtra("listid", listid)
         }
         result.launch(intent)
+    }
+
+    fun refreshData() {
+        prodList?.clear()
+        prodList?.addAll(dbDataGetter?.getProductListInList(listid!!)!!)
+        (ProductsListView?.adapter as ProdListDataAdapter).notifyDataSetChanged()
     }
 
 }

@@ -43,7 +43,7 @@ class CreateUpdateActivityProduct : AppCompatActivity() {
         viewProdCount =
             findViewById<EditText>(R.id.add_count).also { it.setText(product?.count.toString()) }
         viewCheckBox = findViewById<CheckBox>(R.id.cbx_bought).also {
-            it.isChecked = product?.checked!!.or(false)
+            it.isChecked = product?.checked == true
         }
         viewCountType = findViewById<Spinner>(R.id.spn_cnttype).also {
             it.adapter = ArrayAdapter<String>(
@@ -70,14 +70,12 @@ class CreateUpdateActivityProduct : AppCompatActivity() {
                 viewCountType?.selectedItem.toString()
             )
             if (product != null) {
+                newProduct.id = product!!.id
                 DBDataGetter?.updateProduct(newProduct!!, listid!!)
             } else DBDataGetter?.addProduct(newProduct!!, listid!!)
         } catch (ex: Exception) {
             Log.e("Error", ex.message.toString())
         }
-
-
-
         setResult(RESULT_OK)
         finish()
 

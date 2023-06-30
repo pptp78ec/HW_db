@@ -19,6 +19,7 @@ class DBDataGetter(private val DbHelper: DBHelper) {
         var cursor: Cursor? = null
         try {
             cursor = db.rawQuery("""SELECT "label" FROM [Type]""", null)
+            cursor.moveToFirst()
             val array = arrayListOf<String>()
             do {
                 array.add(cursor.getString(0))
@@ -49,6 +50,7 @@ class DBDataGetter(private val DbHelper: DBHelper) {
                 null
             )
             val list = mutableListOf<Product>()
+            cursor.moveToFirst()
             do {
 
                 list.add(
@@ -83,10 +85,11 @@ class DBDataGetter(private val DbHelper: DBHelper) {
         var cursor: Cursor? = null
         try {
             cursor = db.rawQuery(
-                """SELECT List._id, Lists.name, Lists.date, Lists.description FROM [Lists]""",
+                """SELECT Lists._id, Lists.name, Lists.date, Lists.description FROM [Lists]""",
                 null
             )
             val list = mutableListOf<Buylist>()
+            cursor.moveToFirst()
             do {
                 list.add(
                     Buylist(
@@ -123,7 +126,7 @@ class DBDataGetter(private val DbHelper: DBHelper) {
         try {
             var typeId = 0;
             cursor = db.rawQuery(
-                """SELECT Type._id FROM [Type] WHERE Type.label = """ + product.counttype,
+                """SELECT Type._id FROM [Type] WHERE Type.label =  """" + product.counttype +"\"",
                 null
             )
             if (cursor.moveToFirst()) {
@@ -133,6 +136,7 @@ class DBDataGetter(private val DbHelper: DBHelper) {
             cv.put("count", product.count)
             cv.put("list_id", list_id)
             cv.put("count_type", typeId)
+            cv.put("checked", product.checked)
             db.insert("Product", null, cv)
             db.close()
 
@@ -177,7 +181,7 @@ class DBDataGetter(private val DbHelper: DBHelper) {
         try {
             var typeId = 0;
             cursor = db.rawQuery(
-                """SELECT Type._id FROM [Type] WHERE Type.label = """ + product.counttype,
+                """SELECT Type._id FROM [Type] WHERE Type.label =  """" + product.counttype +"\"",
                 null
             )
             if (cursor.moveToFirst()) {
@@ -187,7 +191,7 @@ class DBDataGetter(private val DbHelper: DBHelper) {
             cv.put("count", product.count)
             cv.put("list_id", list_id)
             cv.put("count_type", typeId)
-            db.update("Product", cv, """WHERE Product._id = """ + product.id, null)
+            db.update("Product", cv, """Product._id = """ + product.id, null)
             db.close()
 
         } catch (ex: Exception) {
@@ -212,7 +216,7 @@ class DBDataGetter(private val DbHelper: DBHelper) {
                     .toEpochMilli()
             )
             cv.put("description", buylist.description)
-            db.update("Lists", cv, """WHERE Lists._id = """ + buylist.id, null)
+            db.update("Lists", cv, """Lists._id = """ + buylist.id, null)
             db.close()
 
         } catch (ex: Exception) {
@@ -227,7 +231,7 @@ class DBDataGetter(private val DbHelper: DBHelper) {
     fun deleteProduct(product: Product) {
         val db = DbHelper.open()
         try {
-            db.delete("Product", """WHERE Product._id = """ + product.id, null)
+            db.delete("Product", """Product._id = """ + product.id, null)
             db.close()
 
         } catch (ex: Exception) {
@@ -243,7 +247,7 @@ class DBDataGetter(private val DbHelper: DBHelper) {
     fun deleteList(buylist: Buylist) {
         val db = DbHelper.open()
         try {
-            db.delete("Lists", """WHERE Lists._id = """ + buylist.id, null)
+            db.delete("Lists", """Lists._id = """ + buylist.id, null)
             db.close()
 
         } catch (ex: Exception) {

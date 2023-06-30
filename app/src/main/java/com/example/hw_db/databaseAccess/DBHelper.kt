@@ -2,13 +2,18 @@ package com.example.hw_db.databaseAccess
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.res.AssetManager
+import android.content.res.Resources
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import androidx.core.content.edit
+import com.example.hw_db.R
 import java.io.File
+import java.io.FileInputStream
 import java.io.FileOutputStream
+import java.io.InputStream
 
 
 class DBHelper (
@@ -29,24 +34,25 @@ class DBHelper (
         val file = File(DB_PATH).also { if(!it.exists()){
         it.createNewFile()}
         }
-        if(file.exists() && !myContext.getSharedPreferences("DBPrefss", Context.MODE_PRIVATE).getBoolean("dbcreated", false)){
+        if(file.exists() && !myContext.getSharedPreferences("DbPrefs", Context.MODE_PRIVATE).getBoolean("dbcreated", false)){
             try {
-                val myInput = myContext.assets.open(DB_NAME)
-                val myOutput = FileOutputStream(DB_PATH)
-                val buffer = ByteArray(1024)
-                var length = myInput.read(buffer)
-                while ({length = myInput.read(buffer); length}() > 0){
-                    myOutput.write(buffer,0, length)
+                FileOutputStream(DB_PATH).use { out ->
+                    myContext.resources.openRawResource(R.raw.buylist).use{
+                        it.copyTo(out)
+                    }
                 }
-                myInput.close()
-                myOutput.close()
                 myContext.getSharedPreferences("DbPrefs", Context.MODE_PRIVATE).edit {
                     this.putBoolean("dbcreated", true)
                     this.apply()
                 }
             }
             catch (ex: Exception){
-                Log.e("Error", ex.message.toString())
+                Log.e("!!!ERROR!!", ex.message.toString() + " " + ex.toString())
+
+                for(i in ex.stackTrace){
+
+                    Log.e("!!!Error!!!",i.toString())
+                }
             }
         }
     }
