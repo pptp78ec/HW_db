@@ -26,7 +26,9 @@ class DBHelper (
     }
 
     fun createDB(){
-        val file = File(DB_PATH)
+        val file = File(DB_PATH).also { if(!it.exists()){
+        it.createNewFile()}
+        }
         if(file.exists() && !myContext.getSharedPreferences("DBPrefss", Context.MODE_PRIVATE).getBoolean("dbcreated", false)){
             try {
                 val myInput = myContext.assets.open(DB_NAME)
@@ -56,7 +58,7 @@ class DBHelper (
     companion object Factory{
             fun build(context: Context): DBHelper{
                 val _DB_NAME = "buylist.db"
-                val _DB_PATH = context.filesDir.path + _DB_NAME
+                val _DB_PATH = context.filesDir.path +"""/"""+ _DB_NAME
                 return DBHelper(_DB_PATH, _DB_NAME, 1, context)
             }
     }

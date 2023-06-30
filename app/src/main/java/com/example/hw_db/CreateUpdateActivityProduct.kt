@@ -19,16 +19,16 @@ class CreateUpdateActivityProduct : AppCompatActivity() {
         setContentView(R.layout.activity_create_update_product)
         bundle = intent.extras?.getBundle("BUNDLE")
         listid = intent.extras?.getLong("listid")
-        if (bundle != null) {
-            fillFieldsWithData(bundle!!)
-        }
-        findViewById<Button>(R.id.btn_saveprod).setOnClickListener(View.OnClickListener { clickSave() })
+        fillFieldsWithData(bundle)
+
+        findViewById<Button>(R.id.btn_saveprod).setOnClickListener( { clickSave() })
     }
 
 
-    fun fillFieldsWithData(bundle: Bundle) {
-
-        product = bundle.getSerializable("editItem") as Product
+    fun fillFieldsWithData(bundle: Bundle?) {
+        if(bundle!=null && !bundle.isEmpty){
+            product = bundle.getSerializable("editItem") as Product
+        }
         findViewById<EditText>(R.id.add_prodname).setText(product?.name)
         findViewById<EditText>(R.id.add_count).setText(product?.count.toString())
 
